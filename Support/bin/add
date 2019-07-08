@@ -10,6 +10,7 @@ tmpfile = File.open(tmpfilename, "w+")
 # First line is used as the name of the task
 tmpfile.puts(ENV['MM_SUBJECT'])
 tmpfile.puts("message://%3c" + CGI::escape(ENV['MM_MESSAGE_ID']) + "%3e")
+tmpfile.puts(ENV['MM_RECEIVED'])
 
 # The rest is the note
 canonical = $stdin.read

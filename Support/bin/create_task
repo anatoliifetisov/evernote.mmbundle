@@ -6,7 +6,11 @@ on run argv
 	set theFilename to item 1 of argv
 	set theName to do shell script "head -n1 " & theFilename
 	set theMessageURL to do shell script "sed -n '2p;2q' " & theFilename
-	set theText to do shell script "tail -n+3 " & theFilename
+	set tempDate to do shell script "sed '3q;d' " & theFilename
+	set theText to do shell script "tail -n+4 " & theFilename
+
+	set theDate to date (word 1 of tempDate & " " & word 2 of tempDate & " " & word 3 of tempDate)
+	set time of theDate to ((word 5 of tempDate) * hours + (word 6 of tempDate) * minutes)
 
 	tell application "Evernote"
 		activate
@@ -17,6 +21,8 @@ on run argv
 
 		-- Alternative: with html "<strong>Here is my new HTML note</strong>"
 		set the source URL of theNote to theMessageURL
+		set the creation date of theNote to theDate
+		set the modification date of theNote to theDate
 
 		-- When MailMate is better at providing tag names then this might be useful:
 		-- set theTag to make tag with properties {name:"AppleScriptTag1"}
